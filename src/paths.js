@@ -10,7 +10,13 @@ const fromThis = (...paths) => path.join(thisPath, ...paths);
 const packagePath = pkg => path.dirname(require.resolve(`${pkg}/package.json`));
 const fromPackage = (pkg, ...paths) => path.join(packagePath(pkg), ...paths);
 
+const workspace = readPkgUp.sync({ cwd: fromApp('..') });
+const workspacePath = workspace.path && path.dirname(workspace.path);
+const fromWorkspace = (...paths) => workspacePath && path.join(workspacePath, ...paths);
+const isWorkspace = () => workspace.pkg && workspace.pkg.workspaces;
+
 const fileExistsInApp = fileName => fs.existsSync(fromApp(fileName));
+const fileExistsInWorkspace = fileName => isWorkspace() && fs.existsSync(fromWorkspace(fileName));
 
 function binPathFromPackage(pkg, bin) {
   const pkgJsonPath = fromPackage(pkg, 'package.json');
@@ -30,4 +36,7 @@ module.exports = {
   fromPackage,
   fileExistsInApp,
   binPathFromPackage,
+  fromWorkspace,
+  isWorkspace,
+  fileExistsInWorkspace,
 };

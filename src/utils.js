@@ -1,7 +1,7 @@
-const { fileExistsInApp } = require('./paths');
+const { fileExistsInApp, fileExistsInWorkspace } = require('./paths');
 
 function isUsingFlow() {
-  return fileExistsInApp('.flowconfig');
+  return fileExistsInApp('.flowconfig') || fileExistsInWorkspace('.flowconfig');
 }
 
 module.exports = {
