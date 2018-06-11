@@ -13,5 +13,6 @@ module.exports = function() {
       ],
       isUsingFlow() && '@babel/flow',
     ].filter(Boolean),
+    plugins: ['macros'],
   };
 };
